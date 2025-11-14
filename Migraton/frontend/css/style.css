@@ -1,0 +1,93 @@
+/* ------------------
+   General Styling
+------------------ */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+}
+
+/* Navbar Styling */
+.navbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid #fff;
+}
+
+/* Cards */
+.card {
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-outline-primary {
+  border-radius: 25px;
+  padding: 6px 18px;
+  font-weight: 500;
+}
+
+/* Footer */
+footer {
+  background-color: #212529;
+  color: #f1f1f1;
+  font-size: 14px;
+}
+
+/* Tables */
+.table th, .table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Responsive Iframe (for Google Maps) */
+iframe {
+  border: none;
+  border-radius: 6px;
+}
+
+/* Header Sections */
+header {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Forms */
+select.form-select, input.form-control {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+}
+
+/* Charts */
+canvas {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.hero-text {
+  color: #212529 !important;
+  font-weight: 600;
+}
+.hero-subtext {
+  color: #495057 !important;
+}

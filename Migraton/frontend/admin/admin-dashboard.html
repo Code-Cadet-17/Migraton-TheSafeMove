@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard - HoodWise</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .dashboard-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .pg-card {
+      border-left: 5px solid #0d6efd;
+    }
+
+    .pending-label {
+      font-size: 0.85rem;
+      color: #ff8800;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <span class="navbar-brand">🛡️ HoodWise Admin</span>
+      <button class="btn btn-outline-light" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </button>
+    </div>
+  </nav>
+
+  <!-- Dashboard Main -->
+  <div class="container my-4">
+
+    <!-- Stats -->
+    <div class="dashboard-box mb-4">
+      <h4 class="mb-3">📊 Platform Statistics</h4>
+      <div class="row" id="statsContainer">
+        <p class="text-muted">Loading stats...</p>
+      </div>
+    </div>
+
+    <!-- View Clients Button -->
+    <div class="text-end my-3">
+      <button class="btn btn-primary" onclick="toggleClientSection()">
+        <i class="bi bi-people-fill"></i> View All Clients
+      </button>
+    </div>
+
+    <!-- Clients Section -->
+    <div id="clientSection" class="dashboard-box mb-4" style="display: none;">
+      <h4 class="mb-3">👥 All Registered Clients</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>PG Count</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="clientTableBody">
+            <tr><td colspan="5" class="text-muted">Loading clients...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pending PGs -->
+    <div class="dashboard-box">
+      <h3 class="mb-4">📋 Pending PG Listings</h3>
+      <div id="pgListContainer" class="row g-4">
+        <p class="text-muted">Loading PGs...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-3">
+    <small>&copy; 2025 HoodWise | Admin Panel</small>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "login-admin.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "login-admin.html";
+    }
+
+    async function fetchStats() {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/stats", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const stats = await res.json();
+        const container = document.getElementById("statsContainer");
+
+        container.innerHTML = `
+          <div class="col-md-4 mb-3"><div class="p-3 bg-light rounded shadow-sm"><strong>👤 Users:</strong> ${stats.totalUsers}</div></div>
+          <div class="col-md-4 mb-3"><div class="p-3 bg-light rounded shadow-sm"><strong>🤝 Clients:</strong> ${stats.totalClients}</div></div>
+          <div class="col-md-4 mb-3"><div class="p-3 bg-light rounded shadow-sm"><strong>🏠 Total PGs:</strong> ${stats.totalPGs}</div></div>
+          <div class="col-md-6 mb-3"><div class="p-3 bg-light rounded shadow-sm"><strong>✅ Approved PGs:</strong> ${stats.approvedPGs}</div></div>
+          <div class="col-md-6 mb-3"><div class="p-3 bg-light rounded shadow-sm"><strong>⏳ Pending PGs:</strong> ${stats.pendingPGs}</div></div>
+        `;
+      } catch (err) {
+        console.error("Error fetching stats:", err);
+        document.getElementById("statsContainer").innerHTML = `<p class="text-danger">Failed to load stats</p>`;
+      }
+    }
+
+    function toggleClientSection() {
+      const section = document.getElementById("clientSection");
+      if (section.style.display === "none") {
+        section.style.display = "block";
+        fetchClients();
+      } else {
+        section.style.display = "none";
+      }
+    }
+
+    async function fetchClients() {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/clients", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const clients = await res.json();
+        const tbody = document.getElementById("clientTableBody");
+
+        if (!clients.length) {
+          tbody.innerHTML = `<tr><td colspan="5" class="text-muted">No clients found.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = "";
+        clients.forEach(client => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${client.name}</td>
+            <td>${client.email}</td>
+            <td>${client.phone || "-"}</td>
+            <td>${client.pgCount}</td>
+            <td>
+              <button class="btn btn-sm btn-info" onclick="viewPGs('${client._id}')"><i class="bi bi-eye-fill"></i></button>
+              <button class="btn btn-sm btn-danger" onclick="deleteClient('${client._id}')"><i class="bi bi-trash3"></i></button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error fetching clients:", err);
+        document.getElementById("clientTableBody").innerHTML =
+          `<tr><td colspan="5" class="text-danger">Error loading clients</td></tr>`;
+      }
+    }
+
+    function viewPGs(clientId) {
+      alert("🔍 View PGs for client ID: " + clientId);
+    }
+
+    async function deleteClient(clientId) {
+      if (!confirm("Are you sure you want to delete this client and their PGs?")) return;
+
+      try {
+        const res = await fetch(`http://localhost:5000/api/admin/clients/${clientId}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await res.json();
+        alert(data.message || "Client deleted");
+        fetchClients();
+        fetchStats();
+      } catch (err) {
+        console.error("Delete failed", err);
+        alert("Error deleting client");
+      }
+    }
+
+    async function fetchPendingPGs() {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/pending-pgs", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const pgs = await res.json();
+        const container = document.getElementById("pgListContainer");
+
+        if (!pgs.length) {
+          container.innerHTML = `<p class="text-muted">🎉 No pending PGs. All caught up!</p>`;
+          return;
+        }
+
+        container.innerHTML = "";
+        pgs.forEach(pg => {
+          const col = document.createElement("div");
+          col.className = "col-md-6";
+
+          col.innerHTML = `
+            <div class="card shadow-sm pg-card">
+              <div class="card-body">
+                <h5 class="card-title">${pg.title}</h5>
+                <p class="card-text mb-1"><strong>Location:</strong> ${pg.location}</p>
+                <p class="card-text mb-1"><strong>Rent:</strong> ₹${pg.rent}</p>
+                <p class="card-text small">${pg.description || "No description provided."}</p>
+                <span class="pending-label">⏳ Pending Approval</span>
+                <div class="mt-3">
+                  <button class="btn btn-sm btn-success" onclick="approvePG('${pg._id}')"><i class="bi bi-check2-circle"></i> Approve</button>
+                  <button class="btn btn-sm btn-outline-danger" onclick="deletePG('${pg._id}')"><i class="bi bi-trash"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+          `;
+          container.appendChild(col);
+        });
+      } catch (err) {
+        document.getElementById("pgListContainer").innerHTML = `<p class="text-danger">Error loading PGs</p>`;
+      }
+    }
+
+    async function approvePG(id) {
+      if (!confirm("Approve this PG?")) return;
+
+      try {
+        const res = await fetch(`http://localhost:5000/api/admin/approve-pg/${id}`, {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("✅ PG approved!");
+          fetchStats();
+          fetchPendingPGs();
+        } else {
+          alert(data.message || "Failed to approve PG.");
+        }
+      } catch (err) {
+        alert("Server error.");
+      }
+    }
+
+    async function deletePG(id) {
+      if (!confirm("Delete this PG?")) return;
+
+      try {
+        const res = await fetch(`http://localhost:5000/api/pgs/${id}`, {
+          method: "DELETE"
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("🗑️ PG deleted.");
+          fetchStats();
+          fetchPendingPGs();
+        } else {
+          alert(data.message || "Failed to delete PG.");
+        }
+      } catch (err) {
+        alert("Server error.");
+      }
+    }
+
+    // Initial Load
+    fetchStats();
+    fetchPendingPGs();
+  </script>
+</body>
+</html>

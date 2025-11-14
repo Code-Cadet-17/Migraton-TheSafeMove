@@ -1,0 +1,8 @@
+frontend/client/
+|__client-home.html
+├── signup-client.html          # New signup form for PG owners
+├── login-client.html           # Client login page
+├── client-dashboard.html       # Dashboard after login
+├── add-pg.html                 # Form to add PG listing    
+js/
+└── client.js                   # JS logic for client dashboard/login/etc.

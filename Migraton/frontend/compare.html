@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Localities - HoodWise</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">🏠 HoodWise</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav me-auto" id="navbarMenu">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="explore.html">Explore</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Compare</a></li>
+          <li class="nav-item"><a class="nav-link" href="details.html">Details</a></li>
+        </ul>
+
+        <form class="d-flex me-3">
+          <input class="form-control me-2" type="search" placeholder="Search areas..." />
+          <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+
+        <ul class="navbar-nav">
+          <li class="nav-item d-none" id="logoutNav">
+            <a class="nav-link" href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html" id="loginNav"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="signup.html" id="signupNav"><i class="bi bi-person-plus"></i> Sign Up</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="bg-secondary text-white text-center py-4">
+    <div class="container">
+      <h2>Compare Localities</h2>
+      <p class="lead">Evaluate areas side-by-side on key factors before choosing where to live.</p>
+    </div>
+  </header>
+
+  <!-- Compare Table -->
+  <div class="container my-5">
+    <div class="table-responsive">
+      <table class="table table-bordered text-center table-hover shadow">
+        <thead class="table-dark">
+          <tr>
+            <th>Criteria</th>
+            <th>Indirapuram</th>
+            <th>Raj Nagar Ext.</th>
+            <th>Vasundhara</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Crime Level</td>
+            <td>Medium</td>
+            <td>Low</td>
+            <td>Medium</td>
+          </tr>
+          <tr>
+            <td>Nearby Colleges</td>
+            <td>3</td>
+            <td>2</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>Rent (1BHK)</td>
+            <td>₹8,000-₹11,000</td>
+            <td>₹6,000-₹9,000</td>
+            <td>₹7,000-₹10,000</td>
+          </tr>
+          <tr>
+            <td>Metro Access</td>
+            <td>Vaishali Station</td>
+            <td>None nearby</td>
+            <td>Vaishali Station</td>
+          </tr>
+          <tr>
+            <td>Hospitals Nearby</td>
+            <td>Max, Shanti Gopal</td>
+            <td>Vardan, Dev Nandini</td>
+            <td>Family Health Care</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3">
+    <small>&copy; 2025 HoodWise | Built by Surya</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Dynamic Navbar Logic -->
+  <script>
+  const token = localStorage.getItem("token");
+
+  // 🔒 Redirect to login if user is not authenticated
+  if (!token) {
+    window.location.href = "login.html";
+  }
+
+  // 🔄 Toggle navbar items based on login status
+  const logoutNav = document.getElementById("logoutNav");
+  const loginNav = document.getElementById("loginNav");
+  const signupNav = document.getElementById("signupNav");
+
+  if (token) {
+    logoutNav?.classList.remove("d-none");
+    loginNav?.classList.add("d-none");
+    signupNav?.classList.add("d-none");
+  } else {
+    logoutNav?.classList.add("d-none");
+    loginNav?.classList.remove("d-none");
+    signupNav?.classList.remove("d-none");
+  }
+
+  // 🚪 Logout function
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+  }
+</script>
+
+</body>
+
+</html>

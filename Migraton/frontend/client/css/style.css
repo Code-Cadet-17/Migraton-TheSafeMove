@@ -1,0 +1,127 @@
+/* ========== General ========== */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* ========== Sidebar ========== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 260px;
+    background-color: #343a40;
+    color: #fff;
+    padding-top: 60px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+}
+
+/* Sidebar fully hidden when collapsed */
+.sidebar.collapsed {
+    left: -260px;
+}
+
+/* Sidebar Heading */
+.sidebar-heading {
+    font-size: 1.25rem;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+/* Sidebar Links */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.sidebar ul li:hover {
+    background-color: #495057;
+}
+
+.sidebar ul li i {
+    margin-right: 12px;
+}
+
+.sidebar ul li span {
+    white-space: nowrap;
+}
+
+/* ========== Main Content ========== */
+.main-content {
+    margin-left: 260px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.main-content.collapsed {
+    margin-left: 0;
+}
+
+/* ========== Navbar ========== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    transition: all 0.3s ease;
+}
+
+/* ========== Summary Cards ========== */
+.summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+}
+
+/* ========== KYC Section ========== */
+.kyc-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+    .sidebar {
+        left: -260px;
+    }
+
+    .sidebar.collapsed {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .main-content.collapsed {
+        margin-left: 0;
+    }
+
+    .navbar {
+        margin-left: 0;
+    }
+}

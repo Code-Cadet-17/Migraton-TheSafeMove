@@ -1,0 +1,6 @@
+backend/
+├── models/
+│   └── Client.js               # Mongoose schema for client/PG owner
+
+├── routes/
+│   └── clientRoutes.js         # Handles /signup and /login for clients

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore Localities - HoodWise</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">🏠 HoodWise</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+        title="Toggle navigation" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav me-auto" id="navbarMenu">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Explore</a></li>
+          <li class="nav-item"><a class="nav-link" href="compare.html">Compare</a></li>
+          <li class="nav-item"><a class="nav-link" href="details.html">Details</a></li>
+        </ul>
+        <form class="d-flex me-3" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search areas..." />
+          <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+        <!-- Auth Links -->
+        <ul class="navbar-nav">
+          <li class="nav-item d-none" id="logoutNav">
+            <a class="nav-link" href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html" id="loginNav"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="signup.html" id="signupNav"><i class="bi bi-person-plus"></i> Sign Up</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Explore Header -->
+  <header class="bg-primary text-white text-center py-5">
+    <div class="container">
+      <h1>Explore Popular Localities</h1>
+      <p class="lead">Compare areas based on crime rate, connectivity, and comfort.</p>
+    </div>
+  </header>
+
+  <!-- Filter Buttons -->
+  <div class="container mt-5">
+    <h5>Filter Localities:</h5>
+    <div class="btn-group mb-4" role="group" aria-label="Locality Filters">
+      <button type="button" class="btn btn-outline-secondary btn-sm filter-btn" data-filter="low-crime">Low
+        Crime</button>
+      <button type="button" class="btn btn-outline-secondary btn-sm filter-btn" data-filter="metro">Near Metro</button>
+      <button type="button" class="btn btn-outline-secondary btn-sm filter-btn" data-filter="budget">₹5k–₹10k</button>
+      <button type="button" class="btn btn-outline-secondary btn-sm filter-btn" data-filter="student">Student
+        Friendly</button>
+    </div>
+
+    <!-- PG Card Container (Dynamic Data) -->
+    <div class="row g-4" id="pg-card-container">
+      <!-- PG cards will be injected here from backend using JS -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3 mt-5">
+    <small>&copy; 2025 HoodWise | Built by Surya</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/script.js"></script>
+
+  <script>
+  const token = localStorage.getItem("token");
+
+  // 🔒 Redirect if not logged in
+  if (!token) {
+    window.location.href = "login.html";
+  }
+
+  // 🔄 Toggle navbar visibility
+  const logoutNav = document.getElementById("logoutNav");
+  const loginNav = document.getElementById("loginNav");
+  const signupNav = document.getElementById("signupNav");
+
+  if (token) {
+    logoutNav?.classList.remove("d-none");
+    loginNav?.classList.add("d-none");
+    signupNav?.classList.add("d-none");
+  } else {
+    logoutNav?.classList.add("d-none");
+    loginNav?.classList.remove("d-none");
+    signupNav?.classList.remove("d-none");
+  }
+
+  // 🚪 Logout function
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+  }
+</script>
+
+</body>
+
+</html>
