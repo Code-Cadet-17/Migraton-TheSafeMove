@@ -1,6 +1,6 @@
-# Migration: The Safe Move
+# Migraton-The Safe Move
 
-**Migration: The Safe Move** is a smart, data-driven relocation assistance platform developed to help individuals, students, families and professionals move confidently to a new location with safety and reliable information.
+**Migraton-The Safe Move** is a smart, data-driven relocation assistance platform developed to help individuals, students, families and professionals move confidently to a new location with safety and reliable information.
 
 
 ## ✨ Features
